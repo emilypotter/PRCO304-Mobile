@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { SpotService } from '../spot.service';
+import { WeatherService } from '../weather.service';
 
 @Component({
   selector: 'app-spot-detail',
@@ -8,9 +9,32 @@ import { SpotService } from '../spot.service';
 })
 export class SpotDetailPage implements OnInit {
 
-  constructor(public spotService: SpotService) { }
+  public conditions;
+  public flat: boolean;
+  public currentWeather;
+
+  constructor(public spotService: SpotService, private weatherService: WeatherService) { }
 
   ngOnInit() {
+    this.flat = false;
+    this.getConditions();
+    this.getCurrentWeather();
+  }
+
+  private getConditions(): void {
+    this.spotService.getCurrentConditionsFromSurfline().subscribe((data: any) => {
+      this.conditions = data.data.conditions[0];
+      console.log(this.conditions);
+      if (data.data.conditions[0].am.minHeight === 0 && data.data.conditions[0].am.maxHeight === 0) {
+        this.flat = true;
+      }
+    });
+  }
+
+  public getCurrentWeather(): void {
+    this.weatherService.getCurrentWeather().subscribe((data: any) => {
+      this.currentWeather = data;
+    });
   }
 
 }

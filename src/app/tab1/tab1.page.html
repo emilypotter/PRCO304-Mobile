@@ -12,7 +12,7 @@
       Spots
     </ion-list-header>
 
-    <ion-item (click)="goToSpotDetailPage(spot.surflineLongId)" *ngFor="let spot of spots">
+    <ion-item (click)="goToSpotDetailPage(spot)" *ngFor="let spot of spots">
       <ion-avatar slot="start">
       <img src="../../assets/images/{{spot.spotName}}.jpg">
       </ion-avatar>

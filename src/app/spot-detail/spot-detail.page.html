@@ -1,6 +1,6 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>spot-detail</ion-title>
+  <ion-title>{{spotService.selectedSpot.spotName}}</ion-title>
     <ion-buttons slot="start">
       <ion-back-button defaultHref="#" mode="md"></ion-back-button>
     </ion-buttons>
@@ -8,5 +8,35 @@
 </ion-header>
 
 <ion-content>
-{{spotService.selectedSpot}}
+  <ion-card >
+    <ion-card-header>
+        <ion-card-subtitle>{{spotService.selectedSpot.spotName}}</ion-card-subtitle>
+      <ion-card-title>Today</ion-card-title>
+    </ion-card-header>
+  
+    <ion-card-content *ngIf="conditions">
+      <img src="../../assets/images/{{spotService.selectedSpot.spotName}}.jpg" alt="">
+      <div>
+        <ng-container [ngSwitch]=flat>
+          <span *ngSwitchDefault id="wave-height">
+              {{conditions.am.minHeight}}-{{conditions.am.maxHeight}}ft
+          </span>
+          <span *ngSwitchCase="true" id="wave-height">
+              FLAT
+          </span>
+        </ng-container>
+        <div *ngIf="currentWeather" id="weather">
+            <span>
+                <!-- convert from m/s to mph -->
+                {{currentWeather.wind.speed * 2.237 | number:'1.0-0'}} mph
+                <i class="wi wi-wind from-{{currentWeather.wind.deg | number:'1.0-0'}}-deg"></i>
+                <img style="margin-left:30px"
+                    src="http://openweathermap.org/img/w/{{currentWeather.weather[0].icon}}.png" alt="weather icon">
+                {{currentWeather.weather[0].main}}&ensp;{{currentWeather.main.temp_max | number:'1.0-0'}}&deg;C
+            </span>
+        </div>
+      </div>
+      {{conditions.observation}}
+    </ion-card-content>
+  </ion-card>
 </ion-content>

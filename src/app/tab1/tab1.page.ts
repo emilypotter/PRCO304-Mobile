@@ -24,9 +24,9 @@ export class Tab1Page implements OnInit {
     });
   }
 
-  public goToSpotDetailPage(spotId: string) {
-    this.spotService.selectedSpot = spotId;
-    console.log(this.spotService.selectedSpot);
+  public goToSpotDetailPage(spot: string) {
+    this.spotService.selectedSpot = spot;
+    console.log(this.spotService.selectedSpot.surflineLongId);
     this.router.navigate(['/spot-detail']);
   }
 

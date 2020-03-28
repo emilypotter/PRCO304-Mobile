@@ -7,7 +7,7 @@ import { HttpClient } from '@angular/common/http';
 })
 export class SpotService {
 
-  selectedSpot: string;
+  selectedSpot: any;
 
   constructor(private http: HttpClient) { }
 
@@ -17,6 +17,10 @@ export class SpotService {
 
   public getSpotsLambda(): Observable<any> {
     return this.http.get<any>('https://tetqc1kgx7.execute-api.eu-west-2.amazonaws.com/prod/swellspots');
+  }
+
+  public getCurrentConditionsFromSurfline(): Observable<any> {
+    return this.http.get<any>(`https://services.surfline.com/kbyg/spots/forecasts/conditions?spotId=${this.selectedSpot.surflineLongId}&days=1`);
   }
 
   // NEXT: get spot from surfline with id and deisplay data
