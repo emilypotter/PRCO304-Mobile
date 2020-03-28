@@ -32,6 +32,8 @@
               }
             ],
             "styles": [
+              "node_modules/weathericons/css/weather-icons.min.css",
+              "node_modules/weathericons/css/weather-icons-wind.min.css",
               {
                 "input": "src/theme/variables.scss"
               },

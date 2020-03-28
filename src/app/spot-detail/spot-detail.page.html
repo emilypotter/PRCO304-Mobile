@@ -29,10 +29,12 @@
             <span>
                 <!-- convert from m/s to mph -->
                 {{currentWeather.wind.speed * 2.237 | number:'1.0-0'}} mph
-                <i class="wi wi-wind from-{{currentWeather.wind.deg | number:'1.0-0'}}-deg"></i>
-                <img style="margin-left:30px"
-                    src="http://openweathermap.org/img/w/{{currentWeather.weather[0].icon}}.png" alt="weather icon">
-                {{currentWeather.weather[0].main}}&ensp;{{currentWeather.main.temp_max | number:'1.0-0'}}&deg;C
+                <i style="margin-right: 20px;" class="wi wi-wind from-{{currentWeather.wind.deg | number:'1.0-0'}}-deg"></i>
+                {{currentWeather.main.temp_max | number:'1.0-0'}}&deg;C
+            </span>
+            <span *ngIf="currentWeather">
+              {{currentWeather.weather[0].main}}
+              <img src="http://openweathermap.org/img/w/{{currentWeather.weather[0].icon}}.png" alt="weather icon">
             </span>
         </div>
       </div>
