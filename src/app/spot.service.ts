@@ -23,5 +23,9 @@ export class SpotService {
     return this.http.get<any>(`https://services.surfline.com/kbyg/spots/forecasts/conditions?spotId=${this.selectedSpot.surflineLongId}&days=1`);
   }
 
+  public getForecastFromSurfline(): Observable<any> {
+    return this.http.get<any>(`https://services.surfline.com/kbyg/spots/forecasts/wave?spotId=${this.selectedSpot.surflineLongId}&days=5&intervalHours=24`);
+  }
+
   // NEXT: get spot from surfline with id and deisplay data
 }

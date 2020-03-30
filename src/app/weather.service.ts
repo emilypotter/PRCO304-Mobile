@@ -17,4 +17,12 @@ export class WeatherService {
       }&units=metric&APPID=529ed471254f7e720df0ecf1580d78cc`
     );
   }
+
+  public getWeatherForecast(): Observable<any> {
+    return this.http.get<any>(
+      `https://api.openweathermap.org/data/2.5/forecast?q=${
+        this.spotService.selectedSpot.spotName
+      }&units=metric&APPID=529ed471254f7e720df0ecf1580d78cc`
+    );
+  }
 }

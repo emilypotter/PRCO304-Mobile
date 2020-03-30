@@ -9,9 +9,24 @@
 <ion-content [fullscreen]="true">
   <ion-header collapse="condense">
     <ion-toolbar>
-      <ion-title size="large">Tab 2</ion-title>
+      <ion-title size="large">Account</ion-title>
     </ion-toolbar>
   </ion-header>
 
-  <app-explore-container name="Tab 2 page"></app-explore-container>
+  <form class="form-signin" (submit)="onLoginSubmit()">
+    <ion-list lines="full">
+      <ion-item style="font-size: 30px;">
+          <ion-label position="stacked">Username <ion-text color="danger">*</ion-text></ion-label>
+        <ion-input required type="text" [(ngModel)]="username" name="username"></ion-input>
+      </ion-item>
+      <ion-item style="font-size: 30px;">
+          <ion-label position="stacked">Password <ion-text color="danger">*</ion-text></ion-label>
+        <ion-input required type="password" [(ngModel)]="password" name="password"></ion-input>
+      </ion-item>
+    </ion-list>
+
+    <div class="ion-padding">
+        <ion-button expand="block" type="submit" class="ion-no-margin">Login</ion-button>
+      </div>
+</form>
 </ion-content>

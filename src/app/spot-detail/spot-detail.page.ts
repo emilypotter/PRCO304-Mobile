@@ -12,6 +12,8 @@ export class SpotDetailPage implements OnInit {
   public conditions;
   public flat: boolean;
   public currentWeather;
+  public weatherForecast = [];
+  public surfForecast;
 
   constructor(public spotService: SpotService, private weatherService: WeatherService) { }
 
@@ -19,6 +21,8 @@ export class SpotDetailPage implements OnInit {
     this.flat = false;
     this.getConditions();
     this.getCurrentWeather();
+    this.getWeatherForecast();
+    this.getSurfForecast();
   }
 
   private getConditions(): void {
@@ -34,7 +38,27 @@ export class SpotDetailPage implements OnInit {
   public getCurrentWeather(): void {
     this.weatherService.getCurrentWeather().subscribe((data: any) => {
       this.currentWeather = data;
+      console.log(this.currentWeather);
     });
   }
+
+  private getWeatherForecast(): void {
+    this.weatherService.getWeatherForecast().subscribe((data: any) => {
+      this.weatherForecast.push(data.list[8]);
+      this.weatherForecast.push(data.list[16]);
+      this.weatherForecast.push(data.list[24]);
+      this.weatherForecast.push(data.list[32]);
+      console.log(this.weatherForecast);
+    });
+  }
+
+  private getSurfForecast(): void {
+    this.spotService.getForecastFromSurfline().subscribe((data: any) => {
+      this.surfForecast = data;
+      console.log(this.surfForecast);
+    });
+  }
+
+  // NEXT: get weather forecast and have card for each day. Then account and favourite spots.
 
 }

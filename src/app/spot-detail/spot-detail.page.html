@@ -26,19 +26,66 @@
           </span>
         </ng-container>
         <div *ngIf="currentWeather" id="weather">
+          <div>
             <span>
                 <!-- convert from m/s to mph -->
                 {{currentWeather.wind.speed * 2.237 | number:'1.0-0'}} mph
                 <i style="margin-right: 20px;" class="wi wi-wind from-{{currentWeather.wind.deg | number:'1.0-0'}}-deg"></i>
                 {{currentWeather.main.temp_max | number:'1.0-0'}}&deg;C
             </span>
+          </div>
+          <div>
             <span *ngIf="currentWeather">
               {{currentWeather.weather[0].main}}
               <img src="http://openweathermap.org/img/w/{{currentWeather.weather[0].icon}}.png" alt="weather icon">
             </span>
+          </div>
         </div>
       </div>
-      {{conditions.observation}}
+      <div id="observation">
+        {{conditions.observation}}
+      </div>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card *ngFor="let day of weatherForecast  ; index as i">
+    <ion-card-header>
+        <ion-card-subtitle>{{spotService.selectedSpot.spotName}}</ion-card-subtitle>
+      <ion-card-title>{{day.dt * 1000 | date: 'EEEE d MMM'}}</ion-card-title>
+    </ion-card-header>
+    <ion-card-content *ngIf="weatherForecast.length > 0 && surfForecast">
+        <div id="surf">
+            <span *ngIf="surfForecast && (surfForecast.data.wave[i].surf.min | number:'1.0-0') !== (surfForecast.data.wave[i].surf.max | number:'1.0-0')">
+                {{surfForecast.data.wave[i].surf.min | number:'1.0-0'}}-{{surfForecast.data.wave[i].surf.max | number:'1.0-0'}}ft
+                <span id="wind">
+                    {{day.wind.speed * 2.237 | number:'1.0-0'}} mph
+                    <i class="wi wi-wind from-{{day.wind.deg | number:'1.0-0'}}-deg"></i>
+                </span>
+            </span>
+            <span *ngIf="surfForecast && (surfForecast.data.wave[i].surf.min | number:'1.0-0') === (surfForecast.data.wave[i].surf.max | number:'1.0-0') && !((surfForecast.data.wave[i].surf.max | number:'1.0-0') === (0 | number:'1.0-0'))">
+                {{surfForecast.data.wave[i].surf.min | number:'1.0-0'}}ft
+                <span id="wind">
+                    {{day.wind.speed * 2.237 | number:'1.0-0'}} mph
+                    <i class="wi wi-wind from-{{day.wind.deg | number:'1.0-0'}}-deg"></i>
+                </span>
+            </span>
+            <span *ngIf="surfForecast && (surfForecast.data.wave[i].surf.max | number:'1.0-0') === (0 | number:'1.0-0')">
+                FLAT
+                <span id="wind">
+                    {{day.wind.speed * 2.237 | number:'1.0-0'}} mph
+                    <i class="wi wi-wind from-{{day.wind.deg | number:'1.0-0'}}-deg"></i>
+                </span>
+            </span>
+        </div>
+        <div class="row weather-forecast">
+          <span id="weather">
+            {{day.weather[0].main}}
+            <img src="http://openweathermap.org/img/w/{{day.weather[0].icon}}.png" alt="weather icon">
+          </span>
+          <span id="temp">
+            {{day.main.temp | number:'1.0-0'}}&deg;C
+          </span>
+        </div>
     </ion-card-content>
   </ion-card>
 </ion-content>
