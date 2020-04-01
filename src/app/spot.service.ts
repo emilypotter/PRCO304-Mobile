@@ -27,5 +27,12 @@ export class SpotService {
     return this.http.get<any>(`https://services.surfline.com/kbyg/spots/forecasts/wave?spotId=${this.selectedSpot.surflineLongId}&days=5&intervalHours=24`);
   }
 
-  // NEXT: get spot from surfline with id and deisplay data
+  public getSpotByIdLambda(id: string): Observable<any[]> {
+    return this.http.get<any[]>(`https://tetqc1kgx7.execute-api.eu-west-2.amazonaws.com/prod/swellspots/spot?id=${id}`);
+  }
+
+  public addSpotToFavourites(userId: string, spotObj: any): Observable<any> {
+    console.log(userId);
+    return this.http.post<any>(`https://tetqc1kgx7.execute-api.eu-west-2.amazonaws.com/prod/swellusers/favourite?userId=${userId}`, spotObj);
+  }
 }

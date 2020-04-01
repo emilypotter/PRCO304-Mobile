@@ -1,32 +1,29 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>
-      Tab 2
-    </ion-title>
-  </ion-toolbar>
-</ion-header>
-
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
+<ion-header>
     <ion-toolbar>
-      <ion-title size="large">Account</ion-title>
+      <ion-title>My Account</ion-title>
     </ion-toolbar>
   </ion-header>
-
-  <form class="form-signin" (submit)="onLoginSubmit()">
-    <ion-list lines="full">
-      <ion-item style="font-size: 30px;">
-          <ion-label position="stacked">Username <ion-text color="danger">*</ion-text></ion-label>
-        <ion-input required type="text" [(ngModel)]="username" name="username"></ion-input>
-      </ion-item>
-      <ion-item style="font-size: 30px;">
-          <ion-label position="stacked">Password <ion-text color="danger">*</ion-text></ion-label>
-        <ion-input required type="password" [(ngModel)]="password" name="password"></ion-input>
+  
+  <ion-content *ngIf="loggedIn && user">
+    <img class="center" src="../../assets/images/avatar.png" alt="">
+    <div id="name">{{user.name}}</div>
+    <h1 id="title">My Favourite Spots</h1>
+    <ion-list>
+      <ion-item (click)="goToSpotDetailPage(spot)" *ngFor="let spot of favourites">
+        <ion-avatar slot="start">
+        <img src="../../assets/images/{{spot.spotName}}.jpg">
+        </ion-avatar>
+        <ion-label>
+          <h2>{{spot.spotName}}</h2>
+        </ion-label>
       </ion-item>
     </ion-list>
+  </ion-content>
 
-    <div class="ion-padding">
-        <ion-button expand="block" type="submit" class="ion-no-margin">Login</ion-button>
-      </div>
-</form>
-</ion-content>
+  <ion-content *ngIf="!loggedIn">
+    <div style="text-align: center">
+      <div style="font-size: 30px; display: inline-block; margin-top: 50px;">Looks like you're not logged in</div>
+      <div id="link" [routerLink]="['/tabs/tab3/login']">Tap here to login</div>
+    </div>
+  </ion-content>
+  

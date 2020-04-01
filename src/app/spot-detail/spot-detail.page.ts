@@ -1,6 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { SpotService } from '../spot.service';
 import { WeatherService } from '../weather.service';
+import { JwtHelperService } from '@auth0/angular-jwt';
+import { Storage } from '@ionic/storage';
+import { ToastController } from '@ionic/angular';
+
+const helper = new JwtHelperService();
 
 @Component({
   selector: 'app-spot-detail',
@@ -14,8 +19,9 @@ export class SpotDetailPage implements OnInit {
   public currentWeather;
   public weatherForecast = [];
   public surfForecast;
+  public loggedIn = false;
 
-  constructor(public spotService: SpotService, private weatherService: WeatherService) { }
+  constructor(public spotService: SpotService, private weatherService: WeatherService, private storage: Storage, public toastController: ToastController) { }
 
   ngOnInit() {
     this.flat = false;
@@ -23,6 +29,13 @@ export class SpotDetailPage implements OnInit {
     this.getCurrentWeather();
     this.getWeatherForecast();
     this.getSurfForecast();
+  }
+
+  ionViewWillEnter() {
+    this.storage.get('id_token').then((val) => {
+      this.loggedIn = !helper.isTokenExpired(val);
+    });
+
   }
 
   private getConditions(): void {
@@ -59,6 +72,34 @@ export class SpotDetailPage implements OnInit {
     });
   }
 
-  // NEXT: get weather forecast and have card for each day. Then account and favourite spots.
+  public addToFavourites() {
+    const spot = {
+      spot: this.spotService.selectedSpot._id
+    };
+
+    this.storage.get('id').then((val) => {
+      this.spotService.addSpotToFavourites(val, spot).subscribe((res: any) => {
+      this.presentSuccessToast();
+      }, error => {
+        this.presentFailureToast(error);
+      });
+    });
+  }
+
+  async presentSuccessToast() {
+    const toast = await this.toastController.create({
+      message: 'Spot added to favourites',
+      duration: 2000
+    });
+    toast.present();
+  }
+
+  async presentFailureToast(err: string) {
+    const toast = await this.toastController.create({
+      message: 'Something went wrong: ' + err,
+      duration: 2000
+    });
+    toast.present();
+  }
 
 }

@@ -61,13 +61,14 @@ export class AuthService {
     });
   }
 
-  loadUsername() {
-    // const username = this.storage.get('user');
-    // this.username = username;
-      this.storage.get('user').then((val) => {
-      this.username = val;
-    });
-  }
+  // loadUsername() {
+  //   const username = this.storage.get('user');
+  //   this.username = username;
+  //     this.storage.get('user').then((val) => {
+  //       console.log(val);
+  //       this.username = val;
+  //   });
+  // }
 
   isTokenExpired() {
     this.storage.get('id_token').then((val) => {

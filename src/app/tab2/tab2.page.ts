@@ -1,7 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../auth.service';
 import { Router } from '@angular/router';
-import { ToastController } from '@ionic/angular';
+import { JwtHelperService } from '@auth0/angular-jwt';
+import { Storage } from '@ionic/storage';
+import { SpotService } from '../spot.service';
+
+const helper = new JwtHelperService();
 
 @Component({
   selector: 'app-tab2',
@@ -9,46 +13,57 @@ import { ToastController } from '@ionic/angular';
   styleUrls: ['tab2.page.scss']
 })
 export class Tab2Page {
-  username: string;
-  password: string;
 
-  constructor(private authService: AuthService, private router: Router, public toastController: ToastController) {}
+  user: any;
+  favourites = [];
+  loggedIn = false;
 
-  onLoginSubmit() {
-    const user = {
-      username: this.username,
-      password: this.password
-    };
-    console.log(user);
-    this.authService.getUserByUsername(this.username).subscribe((userData: any) => {
-      if (userData.length > 0) {
-        console.log(userData);
-        this.authService.comparePassword(this.password, userData[0].password).subscribe((res: any) => {
-          this.authService.storeUserData(res.token, userData[0].username, userData[0]._id);
-          this.router.navigate(['']).then(() => {
-            this.presentSuccessLoginToast();
+  constructor(private authService: AuthService, private spotService: SpotService, private storage: Storage, private router: Router) { }
+
+  ionViewWillEnter() { // so when logged out account page info disappears
+    // this.storage.get('id_token').then((val) => {
+    //   this.loggedIn = !helper.isTokenExpired(val);
+    // });
+    this.favourites = [];
+    this.storage.get('id_token').then((val) => {
+      this.loggedIn = !helper.isTokenExpired(val);
+      if (this.loggedIn) {
+        this.storage.get('user').then((username) => {
+          this.authService.getUserByUsername(username).subscribe((user: any) => {
+            this.user = user[0];
+            this.user.favourites.forEach(spot => {
+              this.spotService.getSpotByIdLambda(spot.spot).subscribe((fav: any) => {
+                this.favourites.push(fav[0]);
+              });
+            });
           });
         });
-      } else {
-        this.presentFailedLoginToast()
       }
-    });
+  });
   }
 
-  async presentSuccessLoginToast() {
-    const toast = await this.toastController.create({
-      message: 'Logged in',
-      duration: 2000
-    });
-    toast.present();
-  }
+  // ngOnInit() {
+  //   this.storage.get('id_token').then((val) => {
+  //     this.loggedIn = !helper.isTokenExpired(val);
+  //     if (this.loggedIn) {
+  //       this.storage.get('user').then((username) => {
+  //         this.authService.getUserByUsername(username).subscribe((user: any) => {
+  //           this.user = user[0];
+  //           this.user.favourites.forEach(spot => {
+  //             this.spotService.getSpotByIdLambda(spot.spot).subscribe((fav: any) => {
+  //               this.favourites.push(fav[0]);
+  //             });
+  //           });
+  //         });
+  //       });
+  //     }
+  // });
+  // }
 
-  async presentFailedLoginToast() {
-    const toast = await this.toastController.create({
-      message: 'Incorrect username or password',
-      duration: 2000
-    });
-    toast.present();
+  public goToSpotDetailPage(spot: string) {
+    this.spotService.selectedSpot = spot;
+    console.log(this.spotService.selectedSpot.surflineLongId);
+    this.router.navigate(['tabs/tab1/spot-detail']);
   }
 
 }
