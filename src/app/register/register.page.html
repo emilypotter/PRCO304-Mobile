@@ -1,0 +1,32 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Register</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form class="form-signin" (submit)="onRegisterSubmit()">
+    <ion-list lines="full">
+      <ion-item style="font-size: 30px;">
+          <ion-label position="stacked">Name <ion-text color="danger">*</ion-text></ion-label>
+        <ion-input required type="text" [(ngModel)]="name" name="name"></ion-input>
+      </ion-item>
+      <ion-item style="font-size: 30px;">
+          <ion-label position="stacked">Username <ion-text color="danger">*</ion-text></ion-label>
+        <ion-input required type="text" [(ngModel)]="username" name="username"></ion-input>
+      </ion-item>
+      <ion-item style="font-size: 30px;">
+        <ion-label position="stacked">Email <ion-text color="danger">*</ion-text></ion-label>
+      <ion-input required type="email" [(ngModel)]="email" name="email"></ion-input>
+    </ion-item>
+      <ion-item style="font-size: 30px;">
+        <ion-label position="stacked">Password <ion-text color="danger">*</ion-text></ion-label>
+      <ion-input required type="password" [(ngModel)]="password" name="password"></ion-input>
+    </ion-item>
+    </ion-list>
+
+    <div class="ion-padding">
+        <ion-button expand="block" type="submit" class="ion-no-margin">Register</ion-button>
+      </div>
+  </form>
+</ion-content>

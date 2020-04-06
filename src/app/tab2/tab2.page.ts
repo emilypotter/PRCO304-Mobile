@@ -21,9 +21,6 @@ export class Tab2Page {
   constructor(private authService: AuthService, private spotService: SpotService, private storage: Storage, private router: Router) { }
 
   ionViewWillEnter() { // so when logged out account page info disappears
-    // this.storage.get('id_token').then((val) => {
-    //   this.loggedIn = !helper.isTokenExpired(val);
-    // });
     this.favourites = [];
     this.storage.get('id_token').then((val) => {
       this.loggedIn = !helper.isTokenExpired(val);
@@ -33,7 +30,7 @@ export class Tab2Page {
             this.user = user[0];
             this.user.favourites.forEach(spot => {
               this.spotService.getSpotByIdLambda(spot.spot).subscribe((fav: any) => {
-                this.favourites.push(fav[0]);
+              this.favourites.push(fav[0]);
               });
             });
           });

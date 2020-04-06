@@ -8,7 +8,7 @@
     <img class="center" src="../../assets/images/avatar.png" alt="">
     <div id="name">{{user.name}}</div>
     <h1 id="title">My Favourite Spots</h1>
-    <ion-list>
+    <ion-list *ngIf="favourites.length > 0">
       <ion-item (click)="goToSpotDetailPage(spot)" *ngFor="let spot of favourites">
         <ion-avatar slot="start">
         <img src="../../assets/images/{{spot.spotName}}.jpg">
@@ -24,6 +24,8 @@
     <div style="text-align: center">
       <div style="font-size: 30px; display: inline-block; margin-top: 50px;">Looks like you're not logged in</div>
       <div id="link" [routerLink]="['/tabs/tab3/login']">Tap here to login</div>
+      <div style="font-size: 30px; display: inline-block; margin-top: 50px;">Don't have an account?</div>
+      <div id="link" [routerLink]="['/tabs/tab3/register']">Tap here to register</div>
     </div>
   </ion-content>
   
